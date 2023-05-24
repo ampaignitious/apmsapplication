@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "95373680870",
+    "project_id": "apms-5fb5d",
+    "storage_bucket": "apms-5fb5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95373680870:android:0e02ee56cd3f7b80cb1b27",
+        "android_client_info": {
+          "package_name": "com.example.ampsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "95373680870-40j46f2v3as5dguv7hcv05s8f66vsrh1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyOdDC6dCP55psB6ONRHYV10DWqm3RGow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "95373680870-40j46f2v3as5dguv7hcv05s8f66vsrh1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

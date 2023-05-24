@@ -1,0 +1,59 @@
+ [
+   {
+     "type": 664,
+     "num": 2,
+     "fields": [
+        {"name": "Voltage", "unit": "V", "decPrecision": 3},
+        {"name": "Current", "unit": "A", "decPrecision": 1}
+     ],
+     "properties": [
+       { "id": "L1", "name": "Meter1"},
+       { "id": "L2", "name": "Meter2"}
+     ]
+   },
+   {
+     "type": 665,
+     "num": 1,
+     "fields": [
+        {"name": "Temperature", "unit": "C", "decPrecision": 1},
+        {"name": "Humidity",    "unit": "%", "decPrecision": 1}
+     ],
+     "properties": [
+       { "id": "6102", "name": "Server-Rack"}
+     ]
+   }
+ ]
+
+
+
+ /////////////////
+
+
+
+       appBar: AppBar(
+        title: Text('Temperature Data'),
+      ),
+      body: FutureBuilder<List<TemperatureReading>>(
+        future: temperatureDataFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            List<TemperatureReading> temperatureData = snapshot.data!;
+            return ListView.builder(
+              itemCount: temperatureData.length,
+              itemBuilder: (context, index) {
+                TemperatureReading data = temperatureData[index];
+                return ListTile(
+                  title: Text('System ID: ${data.systemId}'),
+                  subtitle: Text('Temperature Reading: ${data.temperatureReading}'),
+                );
+              },
+            );
+          } else {
+            return Center(child: Text('No data available'));
+          }
+        },
+      ),
