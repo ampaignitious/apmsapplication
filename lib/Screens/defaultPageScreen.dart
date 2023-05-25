@@ -1,6 +1,7 @@
 import 'package:ampsapp/Screens/collectionScreen.dart';
 import 'package:ampsapp/Screens/notificationScreen.dart';
 import 'package:ampsapp/Screens/sensorsScreen.dart';
+import 'package:ampsapp/Screens/settingScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/appDrawer/appDrawer.dart';
@@ -19,8 +20,10 @@ class _DefaultPageScreenState extends State<DefaultPageScreen> {
   List Page = [
  HomeScreen(),
  SensorsScreen(),
- NotificationScreen(),
- CollectionScreen()
+//  NotificationScreen(),
+ CollectionScreen(),
+ SettingScreen(),
+
         ];
     void onItemTapped(int index) {
     setState(() {
@@ -46,10 +49,10 @@ bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label:'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.network_wifi), label: 'Sensors'),
+          BottomNavigationBarItem(icon: Icon(Icons.storage), label: 'collection'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.notification_add_outlined),
-              label: 'Notification'),
-              BottomNavigationBarItem(icon: Icon(Icons.storage), label: 'collection'),
+              icon: Icon(Icons.settings),
+              label: 'Settings'),
 
         ],
       ),

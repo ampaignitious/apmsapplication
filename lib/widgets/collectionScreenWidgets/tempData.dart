@@ -1,36 +1,47 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-import '../collectionLogic/temperatureClass.dart';
+class TemperatureProvider with ChangeNotifier {
+  String _temperatureReading = '0';
+  String _sensorId='';
+    String alertName ="High Temperature Alert";
+  List<dynamic> temperatureList = [];
 
-class TempData extends StatefulWidget {
-  const TempData({super.key});
+  Future<List<dynamic>> fetchTemperatureReading() async {
+    final response = await http.get(Uri.parse('https://apms-production.up.railway.app/api/temperature/current/'));
 
-  @override
-  State<TempData> createState() => _TempDataState();
-}
-
-class _TempDataState extends State<TempData> {
-  @override
-  TemperatureProvider instancex = new TemperatureProvider();
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ChangeNotifierProvider(
-        create:(context)=>TemperatureProvider(),
-        child: ListView.builder(
-          itemCount: instancex.readings.length,
-          itemBuilder: (context, index){
-          final data = instancex.readings[index];
-          return Card(
-                  child: ListTile(
-                    title: Text('System ID: ${data.systemId}'),
-                    subtitle:data.temperatureReading > 27? 
-                      // ListItem(title: 'led control', date: DateTime.now(), message: "Reading: 30*C"),
-                    Text('Temperature Reading: ${data.temperatureReading}', style: TextStyle(color: Colors.red),): Text('Temperature Reading: ${data.temperatureReading}'),
-                  ),
-                );
-        }),
-      ),
-    );
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return List.from(data);
+    } else {
+      throw Exception('Failed to fetch temperature reading');
+    }
   }
+
+  void startPollingTemperature() {
+    Timer.periodic(Duration(seconds: 1), (_) {
+      fetchTemperatureReading().then((List<dynamic> temperatureReading) {
+        temperatureList = temperatureReading;
+
+        if (temperatureList.isNotEmpty) {
+          String latestTemperatureReading = temperatureList.last['temperatureReading'].toString();
+          _temperatureReading = latestTemperatureReading;
+          _sensorId = temperatureList.last['systemId'];
+          notifyListeners();
+        }
+      }).catchError((error) {
+        print('Error: $error');
+      });
+    });
+  }
+
+  TemperatureProvider() {
+    startPollingTemperature();
+  }
+
+  String get temperatureReading => _temperatureReading;
+    String get SystemId => _sensorId;
+        String get AlertName =>alertName ;
 }

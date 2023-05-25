@@ -1,6 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
+import 'package:ampsapp/widgets/collectionScreenWidgets/currentFeedData.dart';
+import 'package:ampsapp/widgets/collectionScreenWidgets/waterData.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 import '../../Screens/collectionScreen.dart';
+import '../collectionScreenWidgets/tempData.dart';
 import 'dataCollectionWidget.dart';
 
 // used for containers to get the ui display
@@ -12,35 +18,132 @@ class SystemReadingWidget extends StatefulWidget {
 }
 
 class _SystemReadingWidgetState extends State<SystemReadingWidget> {
-  @override
-      List icons=[
-    Icons.temple_buddhist,
-    Icons.alarm,  
+
+    List icons=[
+    Icons.temple_buddhist, 
     Icons.monitor_weight_outlined, 
     Icons.water, 
+    Icons.alarm, 
     ];
-    List readings=[
-      "30C",
-      "Safe",
-      "20Kgs",
-      "30ltrs",
 
-    ];
         List sensorName=[
       "Temperature sensor",
-      "Alarm sensor",
       "Weight sensor",
       "Water sensor",
+      "Alarm sensor",
 
     ];
-        List status=[
-      "Medium",
-      "On",
-      "Low",
-      "Low",
 
-    ];
+
+   void initState() {
+    super.initState();
+
+    // Initialize the FlutterLocalNotificationsPlugin
+    initializeNotifications();
+  }
+
+  // Initialize the FlutterLocalNotificationsPlugin
+  void initializeNotifications() {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    FlutterLocalNotificationsPlugin().initialize(initializationSettings);
+  }
+  // 
+
+    // Show local push notification
+void showNotification(String systemId, double reading , String alertname) async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'channel_id',
+    'channel_name',
+    // 'channel_description',
+    importance: Importance.high,
+    priority: Priority.high,
+    ticker: 'ticker',
+    styleInformation: BigTextStyleInformation(''),
+    // Add other customizations as needed
+  );
+
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+  );
+
+  await FlutterLocalNotificationsPlugin().show(
+    0,
+    '$alertname',
+    'System ID: $systemId\n Sensor reading: $reading ',
+    platformChannelSpecifics,
+  );
+}
+//  variables used to keep state of the system sensor reading  value status
+ String temperatureSensorStatus='';
+  String weightSensorStatus='';
+  String waterSensorStatus='';
+  String alarmSensorStatus ='Safe';
+// 
+
   Widget build(BuildContext context) {
+    // reading current temperature sensor vlaue, sending notifiction if there is temperature raise
+        final temperatureProvider = Provider.of<TemperatureProvider>(context);
+        if (double.parse(temperatureProvider.temperatureReading) > 27) {
+                  setState(() {
+                    temperatureSensorStatus = "High temperature";
+                  });
+        showNotification(temperatureProvider.SystemId, double.parse(temperatureProvider.temperatureReading), temperatureProvider.AlertName);
+        }else if( double.parse(temperatureProvider.temperatureReading) < 27){
+                  setState(() {
+                    temperatureSensorStatus = "Normal range";
+                  });
+        }
+
+    // end of the reading temperature
+
+
+    // reading current water sensor vlaue, sending notifiction if there is water raise
+         final waterProvider = Provider.of<WaterProvider>(context);
+        if (double.parse(waterProvider.waterReading) < 100) {
+                  setState(() {
+                    waterSensorStatus = "Low water";
+                  });
+          
+          showNotification(waterProvider.SystemId, double.parse(waterProvider.waterReading), waterProvider.AlertName);
+        }else if( double.parse(waterProvider.waterReading) >200 ){
+                  setState(() {
+                    waterSensorStatus = "Enough water";
+                  });
+        }
+    // 
+
+    // reading current feed sensor vlaue, sending notifiction if feeds are low
+        final feedProvider = Provider.of<FeedProvider>(context);
+        if (double.parse(feedProvider.feedReading) < 9) {
+                  setState(() {
+                    weightSensorStatus = "low feeds";
+                  });
+        showNotification(feedProvider.SystemId, double.parse(feedProvider.feedReading), feedProvider.AlertName);
+        }else if( double.parse(feedProvider.feedReading) > 10){
+                  setState(() {
+                    weightSensorStatus = "Enough feeds";
+                  });
+        }
+
+    // end of the reading temperature
+      List Statuses=[
+      temperatureSensorStatus,
+      weightSensorStatus,
+      waterSensorStatus,
+      alarmSensorStatus,
+
+       ];
+      List readings=[
+      "${temperatureProvider.temperatureReading} C",
+      "${feedProvider.feedReading} kgs",
+      "${waterProvider.waterReading} ltrs",
+       "Safe",
+
+    ];
         final size =MediaQuery.of(context).size;
     return Stack(
       children: [
@@ -129,7 +232,7 @@ boxShadow:[
                       color:  Color.fromARGB(255, 8, 51, 92),
                     ),
             SizedBox(height: size.height*0.015,),
-              Text("${status[index]}", style: TextStyle(color: Colors.red),)
+              Text(Statuses[index], style: TextStyle(color: Colors.red),)
             ],
           ),
               );
