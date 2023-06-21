@@ -103,13 +103,13 @@ void showNotification(String systemId, double reading , String alertname) async 
 
     // reading current water sensor vlaue, sending notifiction if there is water raise
          final waterProvider = Provider.of<WaterProvider>(context);
-        if (double.parse(waterProvider.waterReading) <  0) {
+        if (double.parse(waterProvider.waterReading) <  60) {
                   setState(() {
                     waterSensorStatus = "Low water";
                   });
           
           showNotification(waterProvider.SystemId, double.parse(waterProvider.waterReading), waterProvider.AlertName);
-        }else if( double.parse(waterProvider.waterReading) ==0 ){
+        }else if( double.parse(waterProvider.waterReading) >= 60 ){
                   setState(() {
                     waterSensorStatus = "Enough water";
                   });
@@ -140,7 +140,7 @@ void showNotification(String systemId, double reading , String alertname) async 
       List readings=[
       "${temperatureProvider.temperatureReading} C",
       "${feedProvider.feedReading} kgs",
-      "${waterProvider.waterReading} ltrs",
+      "${waterProvider.waterReading} ml",
        "Safe",
 
     ];
