@@ -47,7 +47,7 @@ class _TemperatureDataReadingState extends State<TemperatureDataReading> {
       // Check for temperature greater than 27 and trigger notification
       temperatureData.forEach((reading) {
         if (reading.temperatureReading > 27) {
-          showNotification(reading.systemId, reading.temperatureReading);
+          // showNotification(reading.systemId, reading.temperatureReading);
         }
       });
 
@@ -104,7 +104,7 @@ void showNotification(String systemId, double temperatureReading) async {
                 return Card(
                   child: ListTile(
                     title: Text('System ID: ${data.systemId}'),
-                    subtitle: data.temperatureReading > 37
+                    subtitle: data.temperatureReading > 32
                         ? Text(
                             'Temperature Reading: ${data.temperatureReading} C',
                             style: TextStyle(color: Colors.red),

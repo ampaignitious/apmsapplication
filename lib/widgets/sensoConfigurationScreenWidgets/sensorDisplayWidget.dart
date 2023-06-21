@@ -17,6 +17,7 @@ class _SensorDisplayWidgetState extends State<SensorDisplayWidget> {
     Icons.alarm,  
     Icons.camera, 
     Icons.water, 
+    Icons.security
     ];
     List iconnames=[
       "Light control section",
@@ -24,10 +25,10 @@ class _SensorDisplayWidgetState extends State<SensorDisplayWidget> {
       "Alarm  Section",
       "Camera  Sensor",
       "Water sensor",
+      "Security Section"
     ];
     List number=[
-      // "3","2","1","1","1"
-      3,2,1,1,1
+      3,1,1,1,1,1
     ];
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

@@ -38,9 +38,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final size = MediaQuery.of(context).size;
     return Column(
       children: [
-SizedBox(height: size.height*0.035,),
-          // selfmade appbar structure
-AppbarWidget(),
 // 
          SizedBox(height: size.height*0.02,),
         Padding(

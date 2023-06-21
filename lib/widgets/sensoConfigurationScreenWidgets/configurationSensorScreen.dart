@@ -5,7 +5,6 @@ class ConfigurationSensorScreen extends StatefulWidget {
   final int sensorNumber;
   final IconData iconSensor;
   const ConfigurationSensorScreen({super.key, required this.sensorName, required this.sensorNumber, required this.iconSensor});
-
   @override
   State<ConfigurationSensorScreen> createState() => _ConfigurationSensorScreenState(this.sensorName, this.sensorNumber, this.iconSensor);
 }
@@ -16,7 +15,8 @@ class _ConfigurationSensorScreenState extends State<ConfigurationSensorScreen> {
   final int sensorNumber;
     final IconData iconSensor;
    _ConfigurationSensorScreenState(this.sensorName, this.sensorNumber, this.iconSensor);
-     var url = Uri.parse('https://apmspoultry.free.beeceptor.com/');
+    //  var url = Uri.parse('https://apmspoultry.free.beeceptor.com/');
+      final url = 'http://192.168.43.70:5000/sensor-data';
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -62,9 +62,15 @@ class _ConfigurationSensorScreenState extends State<ConfigurationSensorScreen> {
                             onTap: () async {
     //  trying api call and sending, sensor section with configuration value
                           try {
-    // var response = await http.post(url, body: "${index + 1}");
- var urlWithIndex =Uri.parse('$url?${sensorName}=${index + 1}');
-  var response = await http.post(urlWithIndex);
+      final response = await http.post(
+      Uri.parse(url),
+      body: {
+      'data': '1',
+      'sensorCategory':'${sensorName}',
+      'sensorId':'${index + 1}'
+      }
+  
+    );
 
     
     if (response.statusCode == 200) {
@@ -86,30 +92,56 @@ class _ConfigurationSensorScreenState extends State<ConfigurationSensorScreen> {
                         // 
                     
                           
-                            child: Container(
-                              margin: EdgeInsets.only(right: size.width*0.06),
-                              height: size.height*0.07,
-                              width: size.width*0.22,
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                              ),
-                              child: Center(child: Text("on", style: TextStyle(color: Colors.white, fontSize: size.height*0.03),)),
-                            ),
-                          ),
-                          InkWell(
-                        onTap: (){
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sensor deactivated successfully")));
-                    
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(right: size.width*0.04),
-                              height: size.height*0.07,
-                              width: size.width*0.22,
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                              ),
-                              child:Center(child: Text("off", style: TextStyle(color: Colors.white, fontSize: size.height*0.03))),
-                            ),
+    child: Container(
+      margin: EdgeInsets.only(right: size.width*0.06),
+      height: size.height*0.07,
+      width: size.width*0.22,
+      decoration: BoxDecoration(
+        color: Colors.blue,
+      ),
+      child: Center(child: Text("on", style: TextStyle(color: Colors.white, fontSize: size.height*0.03),)),
+    ),
+  ),
+  InkWell(
+onTap: () async {
+    //  trying api call and sending, sensor section with configuration value
+    try {
+      final response = await http.post(
+      Uri.parse(url),
+      body: {
+      'data': '0',
+      'sensorCategory':'${sensorName}',
+      'sensorId':'${index+1}'
+      }
+      ,
+    );
+
+    
+    if (response.statusCode == 200) {
+      // Data sent successfully
+      print('Data sent successfully');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sensor deactivated succesfully")));
+
+      // print('Response: ${response.body}');
+    } else {
+      // Request failed
+      print('Request failed with status: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Error occurred
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("sensor failed to connect, check your internet connection.")));
+    print('Error sending data: $e');
+  }
+},
+    child: Container(
+      margin: EdgeInsets.only(right: size.width*0.04),
+      height: size.height*0.07,
+      width: size.width*0.22,
+      decoration: BoxDecoration(
+        color: Colors.red,
+      ),
+      child:Center(child: Text("off", style: TextStyle(color: Colors.white, fontSize: size.height*0.03))),
+    ),
                           ),
                         ],
                       )

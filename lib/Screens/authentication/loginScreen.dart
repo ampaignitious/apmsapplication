@@ -25,28 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   final AuthService _authService = AuthService();
 
-  // sign logic
-  //   void _signIn() async {
-  //   if (_formKey.currentState!.validate()) {
-  //     try {
-  //       UserCredential userCredential =
-  //           await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //         email: _emailController.text.trim(),
-  //         password: _passwordController.text.trim(),
-  //       );
-  //       print('Signed in as ${userCredential.user!.email}');
-  //                Navigator.push(context, MaterialPageRoute(builder: (context){
-  //                     return DefaultPageScreen();
-  //                   }));
-  //     } on FirebaseAuthException catch (e) {
-  //       if (e.code == 'user-not-found') {
-  //         print('No user found for that email.');
-  //       } else if (e.code == 'wrong-password') {
-  //         print('Wrong password provided for that user.');
-  //       }
-  //     }
-  //   }
-  // }
   void _signIn() async {
   if (_formKey.currentState!.validate()) {
     try {
@@ -158,14 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
                SizedBox(height: size.height*0.018,),
-              InkWell(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (ontext){
-                    return RegisterScreen();
-                  }));
-                },
-                child: Center(child: Text("Create account?", style: TextStyle(color: Colors.red),)),
-              )
             ],
           ),
         ),

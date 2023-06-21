@@ -38,9 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         body:Column(
           children: [
-            SizedBox(height: size.height*0.035,),
+            // SizedBox(height: size.height*0.035,),
     // selfmade appbar structure
-    AppbarWidget(),
+    // AppbarWidget(),
     // 
     SizedBox(height: size.height*0.015,),
     RowTextDisplayWidget(description: "Some of active sensors",),
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // 
     // 
     SizedBox(height: size.height*0.015,),
-    RowTextDisplayWidget2(description: "Some of System readings",),
+    RowTextDisplayWidget2(description: "Real time sensor readings",),
     // Card displaying some of system readings
     SizedBox(height: size.height*0.025,),
     SystemReadingWidget(),

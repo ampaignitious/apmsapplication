@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../Screens/authentication/loginLogic.dart';
 import '../../Screens/authentication/loginScreen.dart';
+import '../sensoConfigurationScreenWidgets/sensorReport.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -91,6 +92,19 @@ class _AppDrawerState extends State<AppDrawer> {
                     onTap: () {
                       // Update the state of the app.
                       // ...
+                    },
+                    trailing: Icon(Icons.settings),
+                  ),
+            ),
+             Card(
+              child: ListTile(
+                    title: const Text('Sensor report'),
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return SensorReport();
+                      }));
                     },
                     trailing: Icon(Icons.settings),
                   ),

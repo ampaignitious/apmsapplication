@@ -5,6 +5,7 @@ import 'package:ampsapp/Screens/settingScreen.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/appDrawer/appDrawer.dart';
+import '../widgets/userAccountWidgets/userConfigurationPage.dart';
 import 'homeScreen.dart';
 
 class DefaultPageScreen extends StatefulWidget {
@@ -20,7 +21,6 @@ class _DefaultPageScreenState extends State<DefaultPageScreen> {
   List Page = [
  HomeScreen(),
  SensorsScreen(),
-//  NotificationScreen(),
  CollectionScreen(),
  SettingScreen(),
 
@@ -31,9 +31,33 @@ class _DefaultPageScreenState extends State<DefaultPageScreen> {
     });
     }
   Widget build(BuildContext context) {
-    
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       drawer: AppDrawer(),
+      appBar: AppBar(
+        elevation: 0,
+        title: Center(
+          child: Column(
+            children: [
+              Text("APMS", style: TextStyle(fontSize: size.height*0.05, fontWeight: FontWeight.bold)),
+              Text("Making poultry farming efficient with technology", style: TextStyle(fontSize: size.height*0.009),)
+        
+            ],
+          ),
+        ),
+        actions: [
+                    InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return UserConfigurationPage();
+              }));
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: size.width*0.03),
+              child: CircleAvatar(backgroundImage: AssetImage("assets/image1.png"),),
+            ))
+        ],
+      ),
       body: Page[_selectedIndex],
 bottomNavigationBar: BottomNavigationBar(
   backgroundColor:Colors.blue[200],

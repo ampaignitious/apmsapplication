@@ -42,7 +42,7 @@ import 'package:flutter/material.dart';
      child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
      children: [
-      Text("${description}", style: TextStyle(color: Colors.blue),),
+      Text("${description}", style: TextStyle(color: Colors.blue ),),
       InkWell(
          hoverColor: Colors.amber,
         onTap: (){

@@ -87,12 +87,12 @@ void showNotification(String systemId, double reading , String alertname) async 
   Widget build(BuildContext context) {
     // reading current temperature sensor vlaue, sending notifiction if there is temperature raise
         final temperatureProvider = Provider.of<TemperatureProvider>(context);
-        if (double.parse(temperatureProvider.temperatureReading) > 27) {
+        if (double.parse(temperatureProvider.temperatureReading) > 33) {
                   setState(() {
                     temperatureSensorStatus = "High temperature";
                   });
         showNotification(temperatureProvider.SystemId, double.parse(temperatureProvider.temperatureReading), temperatureProvider.AlertName);
-        }else if( double.parse(temperatureProvider.temperatureReading) < 27){
+        }else if( double.parse(temperatureProvider.temperatureReading) >= 27 && double.parse(temperatureProvider.temperatureReading) < 33){
                   setState(() {
                     temperatureSensorStatus = "Normal range";
                   });
@@ -103,13 +103,13 @@ void showNotification(String systemId, double reading , String alertname) async 
 
     // reading current water sensor vlaue, sending notifiction if there is water raise
          final waterProvider = Provider.of<WaterProvider>(context);
-        if (double.parse(waterProvider.waterReading) < 100) {
+        if (double.parse(waterProvider.waterReading) <  0) {
                   setState(() {
                     waterSensorStatus = "Low water";
                   });
           
           showNotification(waterProvider.SystemId, double.parse(waterProvider.waterReading), waterProvider.AlertName);
-        }else if( double.parse(waterProvider.waterReading) >200 ){
+        }else if( double.parse(waterProvider.waterReading) ==0 ){
                   setState(() {
                     waterSensorStatus = "Enough water";
                   });

@@ -32,7 +32,7 @@ class _WaterCollectionState extends State<WaterCollection> {
 
       return temperatureData;
     } else {
-      throw Exception('Failed to load temperature data');
+      throw Exception('Failed to load water level data');
     }
   }
 
