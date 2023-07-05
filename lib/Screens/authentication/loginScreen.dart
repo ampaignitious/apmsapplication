@@ -26,6 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final AuthService _authService = AuthService();
 
   void _signIn() async {
+    
   if (_formKey.currentState!.validate()) {
     try {
       UserCredential? userCredential = await _authService.signInWithEmailAndPassword(
