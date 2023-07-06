@@ -1,6 +1,6 @@
 # ampsapp
 
-A new Flutter project.
+Automated poultry monitoring application has been developed using Flutter, it consists of different functionalities to monitoring and update farmers about the poultry environment parameters. 
 
 ## Getting Started
 
